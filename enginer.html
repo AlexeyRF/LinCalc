@@ -59,7 +59,6 @@
         }
         .nav-link:hover { background-color: #3b3b3b; border-left: 4px solid var(--accent); }
 
-        /* Основной контейнер */
         #calculator-area {
             width: 380px;
             min-width: 380px;
@@ -70,7 +69,6 @@
             border-right: 1px solid var(--border-color);
         }
 
-        /* Заголовок */
         .calc-header {
             display: flex;
             align-items: center;
@@ -79,7 +77,6 @@
             margin-bottom: 10px;
         }
 
-        /* Дисплей */
         #display-container {
             display: flex;
             flex-direction: column;
@@ -108,7 +105,6 @@
             font-family: inherit;
         }
 
-        /* Панель настроек */
         .settings-row {
             display: flex;
             gap: 15px;
@@ -121,7 +117,6 @@
         }
         .text-btn:hover { color: var(--accent); }
 
-        /* Память */
         .memory-row {
             display: flex;
             justify-content: space-between;
@@ -135,7 +130,6 @@
         .mem-btn:hover { background: var(--btn-op-hover); }
         .mem-btn:disabled { color: #666; cursor: default; background: transparent; }
 
-        /* Выпадающие списки */
         .dropdown-row {
             display: flex;
             gap: 10px;
@@ -159,7 +153,6 @@
         .dropdown-content.func-grid { grid-template-columns: repeat(3, 1fr); }
         .dropdown-content.show { display: grid; }
 
-        /* Клавиатура - сделана более компактной по вертикали */
         #keyboard {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
@@ -170,7 +163,7 @@
             background-color: var(--btn-op); color: white; border: none; border-radius: 4px;
             font-size: 15px; cursor: pointer; display: flex; justify-content: center; align-items: center;
             transition: background 0.1s;
-            height: 38px; /* Уменьшенная высота кнопок */
+            height: 38px; 
         }
         .k-btn:hover { background-color: var(--btn-op-hover); }
         .k-btn.num { background-color: var(--btn-num); font-weight: 500; font-size: 18px; }
@@ -183,7 +176,6 @@
         .second-mode .primary-text { display: none; }
         .second-mode .alt-text { display: inline; }
 
-        /* Правая панель (Журнал / Память) */
         #history-area {
             flex-grow: 1;
             display: flex;
@@ -228,7 +220,6 @@
 
 <div id="loader">Загрузка математического ядра...</div>
 
-<!-- Навигация -->
 <div id="overlay" onclick="toggleNav()"></div>
 <div id="left-nav">
     <a href="graphical.html" class="nav-link">Графический калькулятор</a>
@@ -237,7 +228,6 @@
     <a href="convertor.html" class="nav-link">Конвертер величин</a>
 </div>
 
-<!-- Основной калькулятор -->
 <div id="calculator-area">
     <div class="calc-header">
         <button id="hamburger-btn" onclick="toggleNav()">☰</button>
@@ -294,14 +284,12 @@
     </div>
 
     <div id="keyboard">
-        <!-- Row 1 -->
         <button class="k-btn" id="btn-2nd" onclick="toggle2nd()">2<sup>nd</sup></button>
         <button class="k-btn" onclick="insert('pi')">π</button>
         <button class="k-btn" onclick="insert('e')">e</button>
         <button class="k-btn" onclick="clearAll()">C</button>
         <button class="k-btn" onclick="backspace()">⌫</button>
 
-        <!-- Row 2 -->
         <button class="k-btn dynamic-btn" onclick="insertDynamic('^2', '^3')">
             <span class="primary-text">x²</span><span class="alt-text">x³</span>
         </button>
@@ -310,7 +298,6 @@
         <button class="k-btn" onclick="insert('exp(')">exp</button>
         <button class="k-btn" onclick="insert(' mod ')">mod</button>
 
-        <!-- Row 3 -->
         <button class="k-btn dynamic-btn" onclick="insertDynamic('sqrt(', 'cbrt(')">
             <span class="primary-text">²√x</span><span class="alt-text">³√x</span>
         </button>
@@ -319,7 +306,6 @@
         <button class="k-btn" onclick="insert('!')">n!</button>
         <button class="k-btn" onclick="insert('/')">÷</button>
 
-        <!-- Row 4 -->
         <button class="k-btn dynamic-btn" onclick="insertDynamic('^', '^(1/')">
             <span class="primary-text">xʸ</span><span class="alt-text">y√x</span>
         </button>
@@ -328,7 +314,6 @@
         <button class="k-btn num" onclick="insert('9')">9</button>
         <button class="k-btn" onclick="insert('*')">×</button>
 
-        <!-- Row 5 -->
         <button class="k-btn dynamic-btn" onclick="insertDynamic('10^', '2^')">
             <span class="primary-text">10ˣ</span><span class="alt-text">2ˣ</span>
         </button>
@@ -337,7 +322,6 @@
         <button class="k-btn num" onclick="insert('6')">6</button>
         <button class="k-btn" onclick="insert('-')">−</button>
 
-        <!-- Row 6 -->
         <button class="k-btn dynamic-btn" onclick="insertDynamic('log10(', 'log(')">
             <span class="primary-text">log</span><span class="alt-text">logᵦ</span>
         </button>
@@ -346,7 +330,6 @@
         <button class="k-btn num" onclick="insert('3')">3</button>
         <button class="k-btn" onclick="insert('+')">+</button>
 
-        <!-- Row 7 -->
         <button class="k-btn dynamic-btn" onclick="insertDynamic('log(', 'e^')">
             <span class="primary-text">ln</span><span class="alt-text">eˣ</span>
         </button>
@@ -357,7 +340,6 @@
     </div>
 </div>
 
-<!-- Правая панель Журнал/Память -->
 <div id="history-area">
     <div class="tabs">
         <div class="tab active" onclick="switchTab('history')">Журнал</div>
@@ -400,11 +382,9 @@
     let history = [];
     let justCalculated = false;
 
-    // Форматирование "по-русски": замена 'e' на '*10^' и точки на запятую
     function formatRus(str) {
         if (!str) return '';
         if (typeof str !== 'string') str = str.toString();
-        // Регулярка ловит только 'e' в числах (например 9e-9), избегая функций вроде 'sec'
         let s = str.replace(/(\d)e([+-]?\d+)/ig, '$1*10^$2');
         return s.replace(/\./g, ',');
     }
@@ -423,7 +403,6 @@
             return val;
         }
 
-        // Убираем артефакты плавающей запятой (например 1.22e-16 для sin(pi))
         function snapToZero(val) {
             return Math.abs(val) < 1e-14 ? 0 : val;
         }
@@ -566,13 +545,12 @@
     function calculate() {
         if (!inputStr) return;
         try {
-            // Для math.js запятые заменяем обратно на точки
             let parseStr = inputStr.replace(/,/g, '.');
             
             let result = math.evaluate(parseStr);
             
             result = math.format(result, { precision: 14 });
-            result = parseFloat(result).toString(); // обрезает лишние нули
+            result = parseFloat(result).toString();
 
             let exprStr = inputStr + '=';
             
@@ -624,9 +602,7 @@
     }
 
     function getCurrentValue() {
-        // Достаем числовое значение с дисплея для записи в память
         let valStr = document.getElementById('main-display').value;
-        // Возвращаем экспоненту к стандартному виду для парсинга и меняем запятую на точку
         valStr = valStr.replace(/\*10\^/g, 'e').replace(/,/g, '.');
         return parseFloat(valStr) || 0;
     }
