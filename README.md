@@ -1,2 +1,2 @@
 # LinCalc
-Microsoft Windows Calculator but on Python
+Microsoft Windows Calculator but on crossplatform
