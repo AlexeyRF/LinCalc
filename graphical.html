@@ -33,6 +33,7 @@
         #left-nav.open { left: 0; }
         .nav-link { color: white; text-decoration: none; padding: 15px 20px; border-bottom: 1px solid var(--border-color); transition: background 0.2s; }
         .nav-link:hover { background-color: #3b3b3b; border-left: 4px solid var(--accent); }
+        .nav-link.active { background-color: #3b3b3b; border-left: 4px solid var(--accent); }
 
         #canvas-container { flex-grow: 1; position: relative; cursor: grab; }
         #canvas-container:active { cursor: grabbing; }
@@ -61,7 +62,6 @@
         .param-header { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 5px; font-family: 'Consolas', monospace; }
         input[type="range"] { width: 100%; accent-color: var(--accent); }
 
-        /* Клавиатура внизу */
         #keyboard-area { border-top: 1px solid var(--border-color); background-color: var(--bg-keyboard); padding: 10px; position: relative; }
         
         #trig-panel { display: none; position: absolute; bottom: 100%; left: 0; width: 100%; background: #2d2d2d; border-top: 1px solid #444; border-bottom: 1px solid #444; padding: 10px; box-sizing: border-box; grid-template-columns: repeat(5, 1fr); gap: 5px; z-index: 15; }
@@ -94,6 +94,7 @@
 
 <button id="hamburger-btn" onclick="toggleNav()">☰</button>
 <div id="left-nav">
+    <a href="graphical.html" class="nav-link active">Графический калькулятор</a>
     <a href="enginer.html" class="nav-link">Инженерный калькулятор</a>
     <a href="proger.html" class="nav-link">Калькулятор программиста</a>
     <a href="convertor.html" class="nav-link">Конвертер величин</a>
@@ -274,7 +275,7 @@
             currentMouse = { x: e.clientX - rect.left, y: e.clientY - rect.top };
 
             if (!isDragging) {
-                draw(); // Перерисовка для Tooltip при наведении
+                draw();
                 return;
             }
             view.offsetX += (e.clientX - lastMouse.x);
@@ -328,7 +329,7 @@
 
             if (!R) { L = 'y'; R = parts[0].trim(); }
 
-            if (R === 'y' || R === 'x') {
+            if ((R === 'y' || R === 'x') && (L !== 'x' && L !== 'y' && L !== 'f(x)')) {
                 let temp = L; L = R; R = temp;
                 if (op === '>') op = '<'; else if (op === '<') op = '>';
                 else if (op === '>=') op = '<='; else if (op === '<=') op = '>=';
@@ -353,7 +354,6 @@
             } catch(e) {}
         });
 
-        // Рисуем всплывающую подсказку после функций (чтобы была поверх)
         drawTooltip();
     }
 
@@ -500,6 +500,22 @@
                 else { ctx.lineTo(seg[i].x, seg[i].y); }
             }
             ctx.stroke();
+            
+            if (op !== '=') {
+                ctx.beginPath(); ctx.moveTo(seg[0].x, seg[0].y);
+                for (let i = 1; i < seg.length; i++) {
+                    if (Math.abs(seg[i].x - seg[i-1].x) > canvas.width * 0.4) {
+                        ctx.lineTo((op === '<' || op === '<=') ? 0 : canvas.width, seg[i].y);
+                        ctx.lineTo(seg[i].x, seg[i].y);
+                    } else { ctx.lineTo(seg[i].x, seg[i].y); }
+                }
+                if (op === '<' || op === '<=') { 
+                    ctx.lineTo(0, seg[seg.length-1].y); ctx.lineTo(0, seg[0].y); 
+                } else { 
+                    ctx.lineTo(canvas.width, seg[seg.length-1].y); ctx.lineTo(canvas.width, seg[0].y); 
+                }
+                ctx.fillStyle = color + '44'; ctx.fill();
+            }
         });
     }
 
